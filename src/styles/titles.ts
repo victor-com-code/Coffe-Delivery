@@ -1,33 +1,26 @@
 import styled from 'styled-components'
 
-const TitleBase = styled.h1`
-  font-family: 'Baloo 2', cursive;
-  line-height: 1.3;
-
-  color: ${(props) => props.theme['base-title']};
-`
-
-export const TitleXL = styled(TitleBase)`
+export const TitleXL = styled.h1`
   font-size: 3rem;
   font-weight: bolder;
 `
 
-export const TitleL = styled(TitleBase)`
+export const TitleL = styled.h1`
   font-size: 2rem;
   font-weight: bolder;
 `
 
-export const TitleM = styled(TitleBase)`
+export const TitleM = styled.h2`
   font-size: 1.5rem;
   font-weight: bolder;
 `
 
-export const TitleS = styled(TitleBase)`
+export const TitleS = styled.h3`
   font-size: 1.25rem;
   font-weight: bold;
 `
 
-export const TitleXS = styled(TitleBase)`
+export const TitleXS = styled.h3`
   font-size: 1.125rem;
   font-weight: bold;
 `

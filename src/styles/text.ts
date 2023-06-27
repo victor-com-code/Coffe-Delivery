@@ -24,6 +24,7 @@ export const TextXS = styled(TextLineHeight)`
 export const TagText = styled.span`
   font-size: 0.625rem;
   line-height: 1.3;
+  font-weight: bold;
 `
 
 export const ButtonTextG = styled.span`

@@ -23,6 +23,11 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 1rem;
   }
 
+  h1, h2, h3 {
+    font-family: 'Baloo 2', cursive;
+    line-height: 1.3;
+  }
+
   @media (max-width: 768px) {
     html {
       font-size: 87.5%;
