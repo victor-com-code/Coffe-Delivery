@@ -16,12 +16,12 @@ export function Header() {
 
       <nav>
         <LocationContainer>
-          <MapPin size={22} />
+          <MapPin size={22} weight="fill" />
           <span>Cidade, Estado</span>
         </LocationContainer>
 
         <NavLink to={''} title="Carrinho">
-          <ShoppingCartSimple size={22} />
+          <ShoppingCartSimple size={22} weight="fill" />
           <CartCounterContainer>3</CartCounterContainer>
         </NavLink>
       </nav>
