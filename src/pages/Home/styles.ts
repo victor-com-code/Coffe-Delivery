@@ -9,29 +9,26 @@ export const IntroSection = styled.section`
   flex-direction: row;
   gap: 1rem;
 
-  margin: 5.75rem 0;
-
-  h1 {
-    margin-bottom: 1rem;
-  }
+  margin: 5rem 0;
 
   @media (max-width: 900px) {
     flex-direction: column-reverse;
   }
 `
 
-export const IntroContent = styled.div``
+/* List */
+export const CoffeesSection = styled.section`
+  padding: 2rem 0;
 
+  h2 {
     color: ${(props) => props.theme['base-subtitle']};
   }
 `
 
-/* */
-export const CoffeesContainer = styled.div`
-  background: ${(props) => props.theme['purple-light']};
-  padding: 2rem 0;
-`
-
 export const ListContainer = styled.div`
   display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 2rem 0;
+  gap: 1.5rem;
 `

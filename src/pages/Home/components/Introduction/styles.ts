@@ -48,10 +48,9 @@ export const ItemIcons = styled.span<IconsProps>`
 export const IntroImage = styled.div`
   display: flex;
   justify-content: center;
-
-  width: 30vw;
+  align-items: start;
 
   img {
-    width: 100%;
+    width: calc(30rem - 4px);
   }
 `

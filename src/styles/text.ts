@@ -25,6 +25,7 @@ export const TagText = styled.span`
   font-size: 0.625rem;
   line-height: 1.3;
   font-weight: bold;
+  text-transform: uppercase;
 `
 
 export const ButtonTextG = styled.span`
