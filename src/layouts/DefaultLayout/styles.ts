@@ -6,7 +6,7 @@ export const LayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  margin: 0 auto;
+  margin: 0 auto 5rem;
   padding: 0 10rem;
 
   @media (max-width: 834px) {
