@@ -13,7 +13,8 @@ import {
 } from './styles'
 import { TagText, TextS } from '../../styles/text'
 import { TitleS } from '../../styles/titles'
-import { FormEvent } from 'react'
+import { FormEvent, useContext } from 'react'
+import { CoffeesContext } from '../../contexts/CoffeesContext'
 
 export interface CoffeeType {
   id: string
@@ -27,27 +28,24 @@ export interface CoffeeType {
 
 interface CoffeeProps {
   coffee: CoffeeType
-  onDecreaseAmount: (id: string) => void
-  onIncreaseAmount: (id: string) => void
 }
 
-export function Coffee({
-  coffee,
-  onDecreaseAmount,
-  onIncreaseAmount,
-}: CoffeeProps) {
+export function Coffee({ coffee }: CoffeeProps) {
+  const { increaseAmount, decreaseAmount, addCoffeeToCart } =
+    useContext(CoffeesContext)
+
   function handleDecreaseAmount() {
-    onDecreaseAmount(coffee.id)
+    decreaseAmount(coffee.id)
   }
 
   function handleIncreaseAmount() {
-    onIncreaseAmount(coffee.id)
+    increaseAmount(coffee.id)
   }
 
   function handleAddToCart(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    console.log('add')
+    addCoffeeToCart(coffee)
   }
 
   return (

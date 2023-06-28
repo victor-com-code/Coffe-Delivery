@@ -6,8 +6,14 @@ import {
 } from './styles'
 import logoCoffee from '../../assets/logo.svg'
 import { NavLink } from 'react-router-dom'
+import { useContext } from 'react'
+import { CoffeesContext } from '../../contexts/CoffeesContext'
 
 export function Header() {
+  const { coffeesOnCart } = useContext(CoffeesContext)
+
+  const totalItemsInCart = coffeesOnCart.length
+
   return (
     <HeaderContainer>
       <NavLink className={'logoHome'} to={'/'} title="Home">
@@ -20,9 +26,11 @@ export function Header() {
           <span>Cidade, Estado</span>
         </LocationContainer>
 
-        <NavLink to={''} title="Carrinho">
+        <NavLink to={'/checkout'} title="Carrinho">
           <ShoppingCartSimple size={22} weight="fill" />
-          <CartCounterContainer>3</CartCounterContainer>
+          {totalItemsInCart > 0 && (
+            <CartCounterContainer>{totalItemsInCart}</CartCounterContainer>
+          )}
         </NavLink>
       </nav>
     </HeaderContainer>
