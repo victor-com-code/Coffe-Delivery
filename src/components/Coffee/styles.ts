@@ -128,4 +128,9 @@ export const AddToCartButton = styled.button`
   &:hover {
     background: ${(props) => props.theme.purple};
   }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 `

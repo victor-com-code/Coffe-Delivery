@@ -13,7 +13,7 @@ import {
 } from './styles'
 import { TagText, TextS } from '../../styles/text'
 import { TitleS } from '../../styles/titles'
-import { FormEvent, useContext } from 'react'
+import { FormEvent, useContext, useEffect, useState } from 'react'
 import { CoffeesContext } from '../../contexts/CoffeesContext'
 
 export interface CoffeeType {
@@ -31,22 +31,33 @@ interface CoffeeProps {
 }
 
 export function Coffee({ coffee }: CoffeeProps) {
-  const { increaseAmount, decreaseAmount, addCoffeeToCart } =
-    useContext(CoffeesContext)
+  const [amount, setAmount] = useState<number>(0)
+
+  const { addCoffeeToCart } = useContext(CoffeesContext)
 
   function handleDecreaseAmount() {
-    decreaseAmount(coffee.id)
+    setAmount((state) => {
+      return (state -= 1)
+    })
   }
 
   function handleIncreaseAmount() {
-    increaseAmount(coffee.id)
+    setAmount((state) => {
+      return (state += 1)
+    })
   }
+
+  useEffect(() => {
+    coffee.amount = amount
+  }, [amount, coffee])
 
   function handleAddToCart(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     addCoffeeToCart(coffee)
   }
+
+  const isSubmitDisabled = !amount || amount < 0
 
   return (
     <CoffeeCardCatalog className="catalog" key={coffee.id}>
@@ -80,7 +91,7 @@ export function Coffee({ coffee }: CoffeeProps) {
               placeholder="1"
               min={1}
               max={99}
-              value={coffee.amount}
+              value={amount}
               readOnly
             />
 
@@ -89,7 +100,7 @@ export function Coffee({ coffee }: CoffeeProps) {
             </AmountIncreaseButton>
           </CoffeeAmount>
 
-          <AddToCartButton type="submit">
+          <AddToCartButton type="submit" disabled={isSubmitDisabled}>
             <ShoppingCart size={22} weight="fill" />
           </AddToCartButton>
         </form>

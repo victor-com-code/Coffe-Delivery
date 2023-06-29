@@ -4,8 +4,6 @@ import { CoffeeType } from '../components/Coffee'
 interface CoffeesContextType {
   coffees: CoffeeType[]
   coffeesOnCart: CoffeeType[]
-  decreaseAmount: (id: string) => void
-  increaseAmount: (id: string) => void
   addCoffeeToCart: (data: CoffeeType) => void
 }
 
@@ -18,7 +16,7 @@ interface CoffeesContextProviderProps {
 export function CoffeesContextProvider({
   children,
 }: CoffeesContextProviderProps) {
-  const [coffees, setCoffees] = useState<CoffeeType[]>([
+  const [coffees] = useState<CoffeeType[]>([
     {
       id: '1',
       image: '/src/pages/Home/assets/expresso.png',
@@ -153,40 +151,21 @@ export function CoffeesContextProvider({
   ])
   const [coffeesOnCart, setCoffeesOnCart] = useState<CoffeeType[]>([])
 
-  function increaseAmount(id: string) {
-    setCoffees((state) => {
-      return state.map((coffee) => {
-        if (coffee.id === id) {
-          return {
-            ...coffee,
-            amount: coffee.amount + 1,
-          }
-        } else {
-          return { ...coffee }
-        }
-      })
-    })
-  }
-
-  function decreaseAmount(id: string) {
-    setCoffees((state) => {
-      return state.map((coffee) => {
-        if (coffee.id === id) {
-          return {
-            ...coffee,
-            amount: coffee.amount - 1,
-          }
-        } else {
-          return { ...coffee }
-        }
-      })
-    })
-  }
-
   function addCoffeeToCart(data: CoffeeType) {
-    setCoffeesOnCart((state) => {
-      return [...state, data]
-    })
+    if (coffeesOnCart.includes(data)) {
+      setCoffeesOnCart((state) => {
+        return state.map((item) => {
+          if (item.id === data.id) {
+            return { ...item, amount: data.amount }
+          }
+          return item
+        })
+      })
+    } else {
+      setCoffeesOnCart((state) => {
+        return [...state, data]
+      })
+    }
   }
 
   return (
@@ -194,8 +173,6 @@ export function CoffeesContextProvider({
       value={{
         coffees,
         coffeesOnCart,
-        increaseAmount,
-        decreaseAmount,
         addCoffeeToCart,
       }}
     >
