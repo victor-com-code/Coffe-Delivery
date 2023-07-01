@@ -28,6 +28,11 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1.3;
   }
 
+  button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
   @media (max-width: 768px) {
     html {
       font-size: 87.5%;

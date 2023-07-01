@@ -1,4 +1,4 @@
-import { Minus, Plus, ShoppingCart } from '@phosphor-icons/react'
+import { Minus, Plus, ShoppingCart, Trash } from '@phosphor-icons/react'
 import {
   AddToCartButton,
   AddToCartFormContainer,
@@ -6,15 +6,20 @@ import {
   AmountIncreaseButton,
   AmountInput,
   CoffeeAmount,
+  CoffeeCardCart,
   CoffeeCardCatalog,
   CoffeeTags,
   ImageCoffee,
+  ImageCoffeeCart,
+  RemoveFromCartButton,
+  RemoveFromCartFormContainer,
   TagContent,
 } from './styles'
-import { TagText, TextS } from '../../styles/text'
+import { ButtonTextM, TagText, TextM, TextS } from '../../styles/text'
 import { TitleS } from '../../styles/titles'
 import { FormEvent, useContext, useEffect, useState } from 'react'
 import { CoffeesContext } from '../../contexts/CoffeesContext'
+import { BRReal } from '../../App'
 
 export interface CoffeeType {
   id: string
@@ -22,18 +27,20 @@ export interface CoffeeType {
   name: string
   description: string
   tags: string[]
-  price: string
+  price: number
   amount: number
 }
 
 interface CoffeeProps {
   coffee: CoffeeType
+  place?: string
 }
 
-export function Coffee({ coffee }: CoffeeProps) {
-  const [amount, setAmount] = useState<number>(0)
+export function Coffee({ coffee, place = 'catalog' }: CoffeeProps) {
+  const [amount, setAmount] = useState<number>(coffee.amount)
 
-  const { addCoffeeToCart } = useContext(CoffeesContext)
+  const { addCoffeeToCart, removeCoffeeFromCart, setCalculateTotalPrice } =
+    useContext(CoffeesContext)
 
   function handleDecreaseAmount() {
     setAmount((state) => {
@@ -49,7 +56,8 @@ export function Coffee({ coffee }: CoffeeProps) {
 
   useEffect(() => {
     coffee.amount = amount
-  }, [amount, coffee])
+    setCalculateTotalPrice()
+  }, [amount, coffee, setCalculateTotalPrice])
 
   function handleAddToCart(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -57,54 +65,120 @@ export function Coffee({ coffee }: CoffeeProps) {
     addCoffeeToCart(coffee)
   }
 
-  const isSubmitDisabled = !amount || amount < 0
+  function handleRemoveFromCart(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
 
-  return (
-    <CoffeeCardCatalog className="catalog" key={coffee.id}>
-      <ImageCoffee src={coffee.image} alt="" />
+    removeCoffeeFromCart(coffee.id)
+  }
 
-      <CoffeeTags>
-        {coffee.tags.map((tag) => {
-          return (
-            <TagContent key={`${coffee.id}-${tag}`}>
-              <TagText>{tag}</TagText>
-            </TagContent>
-          )
-        })}
-      </CoffeeTags>
+  const isSubmitDisabled =
+    place === 'catalog' ? !amount || amount < 0 : amount < 2
 
-      <TitleS>{coffee.name}</TitleS>
-      <TextS className="description">{coffee.description}</TextS>
+  let card
 
-      <AddToCartFormContainer>
-        <TextS>
-          <small>R$</small> <span>{coffee.price}</span>
-        </TextS>
-        <form action="" onSubmit={handleAddToCart}>
-          <CoffeeAmount>
-            <AmountDecreaseButton type="button" onClick={handleDecreaseAmount}>
-              <Minus size={16} />
-            </AmountDecreaseButton>
+  if (place === 'cart') {
+    card = (
+      <CoffeeCardCart key={coffee.id}>
+        <ImageCoffeeCart src={coffee.image} alt="" />
 
-            <AmountInput
-              type="number"
-              placeholder="1"
-              min={1}
-              max={99}
-              value={amount}
-              readOnly
-            />
+        <RemoveFromCartFormContainer>
+          <TextM>{coffee.name}</TextM>
+          <form onSubmit={handleRemoveFromCart}>
+            <CoffeeAmount>
+              <AmountDecreaseButton
+                type="button"
+                onClick={handleDecreaseAmount}
+                disabled={isSubmitDisabled}
+              >
+                <Minus size={16} />
+              </AmountDecreaseButton>
 
-            <AmountIncreaseButton type="button" onClick={handleIncreaseAmount}>
-              <Plus size={16} />
-            </AmountIncreaseButton>
-          </CoffeeAmount>
+              <AmountInput
+                type="number"
+                placeholder="1"
+                min={1}
+                max={99}
+                value={amount}
+                readOnly
+              />
 
-          <AddToCartButton type="submit" disabled={isSubmitDisabled}>
-            <ShoppingCart size={22} weight="fill" />
-          </AddToCartButton>
-        </form>
-      </AddToCartFormContainer>
-    </CoffeeCardCatalog>
-  )
+              <AmountIncreaseButton
+                type="button"
+                onClick={handleIncreaseAmount}
+              >
+                <Plus size={16} />
+              </AmountIncreaseButton>
+            </CoffeeAmount>
+
+            <RemoveFromCartButton type="submit">
+              <Trash size={22} />
+              <ButtonTextM>Remover</ButtonTextM>
+            </RemoveFromCartButton>
+          </form>
+        </RemoveFromCartFormContainer>
+
+        <TextM className="price">
+          <span>{BRReal.format(coffee.price)}</span>
+        </TextM>
+      </CoffeeCardCart>
+    )
+  } else {
+    card = (
+      <CoffeeCardCatalog key={coffee.id}>
+        <ImageCoffee src={coffee.image} alt="" />
+
+        <CoffeeTags>
+          {coffee.tags.map((tag) => {
+            return (
+              <TagContent key={`${coffee.id}-${tag}`}>
+                <TagText>{tag}</TagText>
+              </TagContent>
+            )
+          })}
+        </CoffeeTags>
+
+        <TitleS>{coffee.name}</TitleS>
+        <TextS className="description">{coffee.description}</TextS>
+
+        <AddToCartFormContainer>
+          <TextS>
+            <span>{BRReal.format(coffee.price)}</span>
+          </TextS>
+          <form onSubmit={handleAddToCart}>
+            <CoffeeAmount>
+              <AmountDecreaseButton
+                type="button"
+                onClick={handleDecreaseAmount}
+                disabled={isSubmitDisabled}
+              >
+                <Minus size={16} />
+              </AmountDecreaseButton>
+
+              <AmountInput
+                type="number"
+                placeholder="1"
+                min={1}
+                max={99}
+                value={amount}
+                readOnly
+              />
+
+              <AmountIncreaseButton
+                type="button"
+                onClick={handleIncreaseAmount}
+              >
+                <Plus size={16} />
+              </AmountIncreaseButton>
+            </CoffeeAmount>
+
+            <AddToCartButton type="submit" disabled={isSubmitDisabled}>
+              <ShoppingCart size={22} weight="fill" />
+            </AddToCartButton>
+          </form>
+        </AddToCartFormContainer>
+      </CoffeeCardCatalog>
+    )
+  }
+
+  return card
 }

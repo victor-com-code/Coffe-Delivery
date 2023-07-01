@@ -4,7 +4,10 @@ import { CoffeeType } from '../components/Coffee'
 interface CoffeesContextType {
   coffees: CoffeeType[]
   coffeesOnCart: CoffeeType[]
+  totalPrice: number
+  setCalculateTotalPrice: () => void
   addCoffeeToCart: (data: CoffeeType) => void
+  removeCoffeeFromCart: (coffeeId: string) => void
 }
 
 export const CoffeesContext = createContext({} as CoffeesContextType)
@@ -23,7 +26,7 @@ export function CoffeesContextProvider({
       name: 'Expresso Tradicional',
       description: 'O tradicional café feito com água quente e grãos moídos',
       tags: ['Tradicional'],
-      price: '9.90',
+      price: 9.9,
       amount: 0,
     },
     {
@@ -32,7 +35,7 @@ export function CoffeesContextProvider({
       name: 'Expresso Americano',
       description: 'Expresso diluído, menos intenso que o tradicional',
       tags: ['Tradicional'],
-      price: '9.90',
+      price: 9.9,
       amount: 0,
     },
     {
@@ -41,7 +44,7 @@ export function CoffeesContextProvider({
       name: 'Expresso Cremoso',
       description: 'Café expresso tradicional com espuma cremosa',
       tags: ['Tradicional'],
-      price: '9.90',
+      price: 9.9,
       amount: 0,
     },
     {
@@ -50,7 +53,7 @@ export function CoffeesContextProvider({
       name: 'Expresso Gelado',
       description: 'Bebida preparada com café expresso e cubos de gelo',
       tags: ['Tradicional', 'Gelado'],
-      price: '9.90',
+      price: 9.9,
       amount: 0,
     },
     {
@@ -59,7 +62,7 @@ export function CoffeesContextProvider({
       name: 'Café com Leite',
       description: 'Meio a meio de expresso tradicional com leite vaporizado',
       tags: ['Tradicional', 'Com Leite'],
-      price: '9.90',
+      price: 9.9,
       amount: 0,
     },
     {
@@ -69,7 +72,7 @@ export function CoffeesContextProvider({
       description:
         'Uma dose de café expresso com o dobro de leite e espuma cremosa',
       tags: ['Tradicional', 'Com Leite'],
-      price: '12.90',
+      price: 12.9,
       amount: 0,
     },
     {
@@ -79,7 +82,7 @@ export function CoffeesContextProvider({
       description:
         'Bebida com canela feita de doses iguais de café, leite e espuma',
       tags: ['Tradicional', 'Com Leite'],
-      price: '12.90',
+      price: 12.9,
       amount: 0,
     },
     {
@@ -89,7 +92,7 @@ export function CoffeesContextProvider({
       description:
         'Café expresso misturado com um pouco de leite quente e espuma',
       tags: ['Tradicional', 'Com Leite'],
-      price: '12.90',
+      price: 12.9,
       amount: 0,
     },
     {
@@ -98,7 +101,7 @@ export function CoffeesContextProvider({
       name: 'Mocaccino',
       description: 'Café expresso com calda de chocolate, pouco leite e espuma',
       tags: ['Tradicional', 'Com Leite'],
-      price: '12.90',
+      price: 12.9,
       amount: 0,
     },
     {
@@ -108,7 +111,7 @@ export function CoffeesContextProvider({
       description:
         'Bebida feita com chocolate dissolvido no leite quente e café',
       tags: ['Especial', 'Com Leite'],
-      price: '19.90',
+      price: 19.9,
       amount: 0,
     },
     {
@@ -118,7 +121,7 @@ export function CoffeesContextProvider({
       description:
         'Drink gelado de café expresso com rum, creme de leite e hortelã',
       tags: ['Especial', 'Alcoólico', 'Gelado'],
-      price: '19.90',
+      price: 19.9,
       amount: 0,
     },
     {
@@ -127,7 +130,7 @@ export function CoffeesContextProvider({
       name: 'Havaiano',
       description: 'Bebida adocicada preparada com café e leite de coco',
       tags: ['Especial'],
-      price: '19.90',
+      price: 19.9,
       amount: 0,
     },
     {
@@ -136,7 +139,7 @@ export function CoffeesContextProvider({
       name: 'Árabe',
       description: 'Bebida preparada com grãos de café árabe e especiarias',
       tags: ['Especial'],
-      price: '19.90',
+      price: 19.9,
       amount: 0,
     },
     {
@@ -145,11 +148,14 @@ export function CoffeesContextProvider({
       name: 'Irlandês',
       description: 'Bebida a base de café, uísque irlandês, açúcar e chantilly',
       tags: ['Especial', 'Alcoólico'],
-      price: '19.90',
+      price: 19.9,
       amount: 0,
     },
   ])
+
   const [coffeesOnCart, setCoffeesOnCart] = useState<CoffeeType[]>([])
+
+  const [totalPrice, setTotalPrice] = useState(0)
 
   function addCoffeeToCart(data: CoffeeType) {
     if (coffeesOnCart.includes(data)) {
@@ -168,12 +174,31 @@ export function CoffeesContextProvider({
     }
   }
 
+  function removeCoffeeFromCart(coffeeId: string) {
+    const coffeesOnCartWithoutDeletedOne = coffeesOnCart.filter((coffee) => {
+      return coffee.id !== coffeeId
+    })
+
+    setCoffeesOnCart(coffeesOnCartWithoutDeletedOne)
+  }
+
+  function setCalculateTotalPrice() {
+    setTotalPrice(
+      coffeesOnCart.reduce((sum, coffee) => {
+        return (sum += coffee.price * coffee.amount)
+      }, 0),
+    )
+  }
+
   return (
     <CoffeesContext.Provider
       value={{
         coffees,
         coffeesOnCart,
+        totalPrice,
+        setCalculateTotalPrice,
         addCoffeeToCart,
+        removeCoffeeFromCart,
       }}
     >
       {children}

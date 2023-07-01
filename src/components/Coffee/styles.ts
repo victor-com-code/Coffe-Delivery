@@ -26,8 +26,31 @@ export const CoffeeCardCatalog = styled(CoffeeCard)`
   }
 `
 
+export const CoffeeCardCart = styled(CoffeeCard)`
+  justify-content: space-between;
+  align-items: flex-start;
+
+  width: 23rem;
+  padding: 0.5rem 0.25rem;
+
+  .price {
+    color: ${(props) => props.theme['base-text']};
+    font-weight: bold;
+    text-align: right;
+    flex: 1;
+  }
+`
+
 export const ImageCoffee = styled.img`
   margin-top: calc(0px - 1rem - 4px);
+  max-width: 7.5rem;
+  max-height: 7.5rem;
+`
+
+export const ImageCoffeeCart = styled.img`
+  max-width: 4rem;
+  max-height: 4rem;
+  margin-right: 1.5rem;
 `
 
 export const CoffeeTags = styled.div`
@@ -50,16 +73,19 @@ export const TagContent = styled.span`
   }
 `
 
-export const AddToCartFormContainer = styled.div`
+const CartFormContainer = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
 
   form {
     display: flex;
     gap: 0.5rem;
   }
+`
+
+export const AddToCartFormContainer = styled(CartFormContainer)`
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 
   p {
     color: ${(props) => props.theme['base-text']};
@@ -67,6 +93,16 @@ export const AddToCartFormContainer = styled.div`
     span {
       font-weight: bolder;
     }
+  }
+`
+
+export const RemoveFromCartFormContainer = styled(CartFormContainer)`
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+
+  form {
+    align-items: center;
   }
 `
 
@@ -111,16 +147,20 @@ export const AmountInput = styled.input`
   -moz-appearance: textfield;
 `
 
-export const AddToCartButton = styled.button`
+const BaseCartButton = styled.button`
   cursor: pointer;
   border: none;
   border-radius: 8px;
-  background: ${(props) => props.theme['purple-dark']};
-  color: ${(props) => props.theme['base-card']};
 
   display: flex;
   justify-content: center;
   align-items: center;
+`
+
+export const AddToCartButton = styled(BaseCartButton)`
+  background: ${(props) => props.theme['purple-dark']};
+  color: ${(props) => props.theme['base-card']};
+
   padding: 0.5rem;
 
   transition: background-color 0.3s;
@@ -128,9 +168,27 @@ export const AddToCartButton = styled.button`
   &:hover {
     background: ${(props) => props.theme.purple};
   }
+`
 
-  &:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
+export const RemoveFromCartButton = styled(BaseCartButton)`
+  background: ${(props) => props.theme['base-button']};
+  color: ${(props) => props.theme['base-text']};
+  gap: 0.25rem;
+
+  height: 2rem;
+  padding: 0 0.5rem;
+
+  span {
+    text-transform: uppercase;
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  svg {
+    color: ${(props) => props.theme.purple};
+  }
+
+  &:hover {
+    background: ${(props) => props.theme['base-hover']};
   }
 `

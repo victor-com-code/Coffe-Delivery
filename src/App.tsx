@@ -5,6 +5,11 @@ import { BrowserRouter } from 'react-router-dom'
 import { Router } from './Router'
 import { CoffeesContextProvider } from './contexts/CoffeesContext'
 
+export const BRReal = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+})
+
 export function App() {
   return (
     <ThemeProvider theme={defaultTheme}>
