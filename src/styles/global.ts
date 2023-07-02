@@ -33,6 +33,11 @@ export const GlobalStyle = createGlobalStyle`
     cursor: not-allowed;
   }
 
+  input[type="number"]{
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+  }
+
   @media (max-width: 768px) {
     html {
       font-size: 87.5%;

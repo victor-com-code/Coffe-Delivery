@@ -142,12 +142,9 @@ export const AmountInput = styled.input`
   width: 1.25rem;
   text-align: center;
   color: ${(props) => props.theme['base-title']};
-
-  -webkit-appearance: none;
-  -moz-appearance: textfield;
 `
 
-const BaseCartButton = styled.button`
+const CartButtonBase = styled.button`
   cursor: pointer;
   border: none;
   border-radius: 8px;
@@ -157,7 +154,7 @@ const BaseCartButton = styled.button`
   align-items: center;
 `
 
-export const AddToCartButton = styled(BaseCartButton)`
+export const AddToCartButton = styled(CartButtonBase)`
   background: ${(props) => props.theme['purple-dark']};
   color: ${(props) => props.theme['base-card']};
 
@@ -170,7 +167,7 @@ export const AddToCartButton = styled(BaseCartButton)`
   }
 `
 
-export const RemoveFromCartButton = styled(BaseCartButton)`
+export const RemoveFromCartButton = styled(CartButtonBase)`
   background: ${(props) => props.theme['base-button']};
   color: ${(props) => props.theme['base-text']};
   gap: 0.25rem;
