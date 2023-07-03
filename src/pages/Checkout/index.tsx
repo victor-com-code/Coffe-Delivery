@@ -36,11 +36,13 @@ import {
   MapPinLine,
   Money,
 } from '@phosphor-icons/react'
+import { AddressContext } from '../../contexts/AddressContext'
 
 export function Checkout() {
   const { coffeesOnCart, totalPrice, setCalculateTotalPrice } =
     useContext(CoffeesContext)
 
+  const { setNewAddress } = useContext(AddressContext)
   const deliveryFee = 3.55
 
   const totalToPay = deliveryFee + totalPrice

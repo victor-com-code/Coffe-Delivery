@@ -8,9 +8,11 @@ import logoCoffee from '../../assets/logo.svg'
 import { NavLink } from 'react-router-dom'
 import { useContext } from 'react'
 import { CoffeesContext } from '../../contexts/CoffeesContext'
+import { AddressContext } from '../../contexts/AddressContext'
 
 export function Header() {
   const { coffeesOnCart } = useContext(CoffeesContext)
+  const { address } = useContext(AddressContext)
 
   const totalItemsInCart = coffeesOnCart.length
 
@@ -23,7 +25,9 @@ export function Header() {
       <nav>
         <LocationContainer>
           <MapPin size={22} weight="fill" />
-          <span>Cidade, Estado</span>
+          <span>
+            {address.city}, {address.state}
+          </span>
         </LocationContainer>
 
         <NavLink to={'/checkout'} title="Carrinho">

@@ -4,6 +4,7 @@ import { GlobalStyle } from './styles/global'
 import { BrowserRouter } from 'react-router-dom'
 import { Router } from './Router'
 import { CoffeesContextProvider } from './contexts/CoffeesContext'
+import { AddressContextProvider } from './contexts/AddressContext'
 
 export const BRReal = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -15,7 +16,9 @@ export function App() {
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
         <CoffeesContextProvider>
-          <Router />
+          <AddressContextProvider>
+            <Router />
+          </AddressContextProvider>
         </CoffeesContextProvider>
       </BrowserRouter>
 
