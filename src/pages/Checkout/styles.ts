@@ -51,13 +51,6 @@ export const AddressCardContainer = styled(CheckoutCardContainerBase)`
   header svg {
     color: ${(props) => props.theme['yellow-dark']};
   }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
 `
 
 export const PaymentCardContainer = styled(CheckoutCardContainerBase)`
@@ -66,15 +59,26 @@ export const PaymentCardContainer = styled(CheckoutCardContainerBase)`
   }
 `
 
+export const AddressFields = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+`
+
 const InfoInputBase = styled.input`
   border-radius: 4px;
   border: 1px solid ${(props) => props.theme['base-button']};
   background: ${(props) => props.theme['base-input']};
-  color: ${(props) => props.theme['base-label']};
+  color: ${(props) => props.theme['base-text']};
 
   padding: 0.75rem;
   display: flex;
   align-items: center;
+
+  &::placeholder {
+    color: ${(props) => props.theme['base-label']};
+  }
 `
 
 export const CEPCodeInput = styled(InfoInputBase)``

@@ -3,6 +3,7 @@ import { Coffee } from '../../components/Coffee'
 import { CoffeesContext } from '../../contexts/CoffeesContext'
 import {
   AddressCardContainer,
+  AddressFields,
   CEPCodeInput,
   CartContainer,
   CheckoutContainer,
@@ -36,13 +37,39 @@ import {
   MapPinLine,
   Money,
 } from '@phosphor-icons/react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as zod from 'zod'
+import { useNavigate } from 'react-router-dom'
 import { AddressContext } from '../../contexts/AddressContext'
+
+const newOrderFormValidationSchema = zod
+  .object({
+    cep: zod.string().length(8),
+    street: zod.string().min(1, 'Informe a Rua'),
+    houseNumber: zod.number().min(1, 'Informe o número da casa'),
+    complement: zod.string(),
+    state: zod.string().toUpperCase().min(1, 'Informe o Estado'),
+    city: zod.string().min(1, 'Informe a Cidade'),
+    neighborhood: zod.string().min(1, 'Informe o Bairro'),
+    payment: zod.string().min(1),
+  })
+  .partial({ complement: true })
+
+type NewOrderFormData = zod.infer<typeof newOrderFormValidationSchema>
 
 export function Checkout() {
   const { coffeesOnCart, totalPrice, setCalculateTotalPrice } =
     useContext(CoffeesContext)
 
   const { setNewAddress } = useContext(AddressContext)
+
+  const navigate = useNavigate()
+
+  const { register, handleSubmit, reset } = useForm<NewOrderFormData>({
+    resolver: zodResolver(newOrderFormValidationSchema),
+  })
+
   const deliveryFee = 3.55
 
   const totalToPay = deliveryFee + totalPrice
@@ -50,6 +77,23 @@ export function Checkout() {
   useEffect(() => {
     setCalculateTotalPrice()
   }, [coffeesOnCart, setCalculateTotalPrice])
+
+  function handleCreateNewOrder(data: NewOrderFormData) {
+    console.log(data)
+
+    setNewAddress({
+      cep: data.cep,
+      houseNumber: data.houseNumber,
+      state: data.state,
+      city: data.city,
+      neighborhood: data.neighborhood,
+      complement: data.complement,
+    })
+
+    // reset()
+
+    // navigate('/')
+  }
 
   return (
     <CheckoutContainer>
@@ -63,19 +107,48 @@ export function Checkout() {
               <TextS>Informe o endereço onde deseja receber seu pedido</TextS>
             </div>
           </header>
-          <form>
-            <CEPCodeInput type="number" placeholder="CEP" />
-            <StreetInput type="text" placeholder="Rua" />
+          <AddressFields>
+            <CEPCodeInput
+              type="number"
+              placeholder="CEP"
+              {...register('cep')}
+            />
+            <StreetInput
+              type="text"
+              placeholder="Rua"
+              {...register('street')}
+            />
             <InfoAddressContainer>
-              <NumberInput type="number" placeholder="Número" />
-              <ComplementInput type="text" placeholder="Complemento" />
+              <NumberInput
+                type="number"
+                placeholder="Número"
+                {...register('houseNumber', { valueAsNumber: true })}
+              />
+              <ComplementInput
+                type="text"
+                placeholder="Complemento"
+                {...register('complement')}
+              />
             </InfoAddressContainer>
             <InfoAddressContainer>
-              <StateInput type="text" placeholder="UF" maxLength={2} />
-              <CityInput type="text" placeholder="Cidade" />
-              <NeighborhoodInput type="text" placeholder="Bairro" />
+              <StateInput
+                type="text"
+                placeholder="UF"
+                maxLength={2}
+                {...register('state')}
+              />
+              <CityInput
+                type="text"
+                placeholder="Cidade"
+                {...register('city')}
+              />
+              <NeighborhoodInput
+                type="text"
+                placeholder="Bairro"
+                {...register('neighborhood')}
+              />
             </InfoAddressContainer>
-          </form>
+          </AddressFields>
         </AddressCardContainer>
         <PaymentCardContainer>
           <header>
@@ -89,21 +162,36 @@ export function Checkout() {
           </header>
           <InfoPaymentContainer>
             <PaymentMethodItem>
-              <input type="radio" name="payment" id="credit" />
+              <input
+                type="radio"
+                id="credit"
+                {...register('payment')}
+                value={'credit'}
+              />
               <div>
                 <CreditCard size={20} />
                 <ButtonTextM>Cartão de crédito</ButtonTextM>
               </div>
             </PaymentMethodItem>
             <PaymentMethodItem>
-              <input type="radio" name="payment" id="debit" />
+              <input
+                type="radio"
+                id="debit"
+                {...register('payment')}
+                value={'debit'}
+              />
               <div>
                 <Bank size={20} />
                 <ButtonTextM>Cartão de débito</ButtonTextM>
               </div>
             </PaymentMethodItem>
             <PaymentMethodItem>
-              <input type="radio" name="payment" id="money" />
+              <input
+                type="radio"
+                id="money"
+                {...register('payment')}
+                value={'money'}
+              />
               <div>
                 <Money size={20} />
                 <ButtonTextM>Dinheiro</ButtonTextM>
@@ -136,7 +224,7 @@ export function Checkout() {
             </TextL>
           </OrderInfoContainer>
 
-          <ConfirmOrderButton>
+          <ConfirmOrderButton onClick={handleSubmit(handleCreateNewOrder)}>
             <ButtonTextG>Confirmar Pedido</ButtonTextG>
           </ConfirmOrderButton>
         </CartContainer>
