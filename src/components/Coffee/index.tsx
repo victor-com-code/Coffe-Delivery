@@ -18,18 +18,8 @@ import {
 import { ButtonTextM, TagText, TextM, TextS } from '../../styles/text'
 import { TitleS } from '../../styles/titles'
 import { FormEvent, useContext, useEffect, useState } from 'react'
-import { CoffeesContext } from '../../contexts/CoffeesContext'
+import { CoffeeType, CoffeesContext } from '../../contexts/CoffeesContext'
 import { BRReal } from '../../App'
-
-export interface CoffeeType {
-  id: string
-  image: string
-  name: string
-  description: string
-  tags: string[]
-  price: number
-  amount: number
-}
 
 interface CoffeeProps {
   coffee: CoffeeType

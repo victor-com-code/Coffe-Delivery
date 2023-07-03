@@ -1,5 +1,14 @@
 import { ReactNode, createContext, useState } from 'react'
-import { CoffeeType } from '../components/Coffee'
+
+export interface CoffeeType {
+  id: string
+  image: string
+  name: string
+  description: string
+  tags: string[]
+  price: number
+  amount: number
+}
 
 interface CoffeesContextType {
   coffees: CoffeeType[]
