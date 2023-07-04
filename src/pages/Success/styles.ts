@@ -32,6 +32,7 @@ export const OrderBoardModule = styled.div`
   );
   padding: 3px;
   border-radius: 6px 36px;
+  width: 32rem;
 `
 
 export const OrderBoardInfos = styled.div`

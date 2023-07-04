@@ -25,9 +25,9 @@ export function Header() {
       <nav>
         <LocationContainer>
           <MapPin size={22} weight="fill" />
-          <span>
-            {address.city}, {address.state}
-          </span>
+          {address.city !== '' && (
+            <span>{`${address.city}, ${address.state}`}</span>
+          )}
         </LocationContainer>
 
         <NavLink to={'/checkout'} title="Carrinho">

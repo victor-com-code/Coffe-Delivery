@@ -15,7 +15,7 @@ import { useContext } from 'react'
 import { AddressContext } from '../../contexts/AddressContext'
 
 export function Success() {
-  const { address } = useContext(AddressContext)
+  const { address, payment } = useContext(AddressContext)
 
   return (
     <SuccessContainer>
@@ -64,10 +64,7 @@ export function Success() {
               <div>
                 <TextM>Pagamento na entrega</TextM>
                 <TextM>
-                  <strong>
-                    {/* {address.cep.includes('-card') && 'Cartão de'} */}
-                    Cartão de Crédito
-                  </strong>
+                  <strong>{payment.method}</strong>
                 </TextM>
               </div>
             </InfoItemContainer>

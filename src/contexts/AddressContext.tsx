@@ -1,5 +1,9 @@
 import { ReactNode, createContext, useState } from 'react'
 
+export interface PaymentMethodType {
+  method: string
+}
+
 export interface AddressType {
   cep: string
   street: string
@@ -12,7 +16,9 @@ export interface AddressType {
 
 interface AddressContextType {
   address: AddressType
+  payment: PaymentMethodType
   setNewAddress: (data: AddressType) => void
+  setNewPaymentMethod: (method: PaymentMethodType) => void
 }
 
 export const AddressContext = createContext({} as AddressContextType)
@@ -32,13 +38,22 @@ export function AddressContextProvider({
     city: '',
     neighborhood: '',
   })
+  const [payment, setPayment] = useState<PaymentMethodType>({
+    method: 'Dinheiro',
+  })
 
   function setNewAddress(data: AddressType) {
     setAddress(data)
   }
 
+  function setNewPaymentMethod(method: PaymentMethodType) {
+    setPayment(method)
+  }
+
   return (
-    <AddressContext.Provider value={{ address, setNewAddress }}>
+    <AddressContext.Provider
+      value={{ address, payment, setNewAddress, setNewPaymentMethod }}
+    >
       {children}
     </AddressContext.Provider>
   )

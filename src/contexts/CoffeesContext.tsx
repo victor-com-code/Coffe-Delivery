@@ -17,6 +17,7 @@ interface CoffeesContextType {
   setCalculateTotalPrice: () => void
   addCoffeeToCart: (data: CoffeeType) => void
   removeCoffeeFromCart: (coffeeId: string) => void
+  resetCoffeesOnCart: () => void
 }
 
 export const CoffeesContext = createContext({} as CoffeesContextType)
@@ -191,6 +192,10 @@ export function CoffeesContextProvider({
     setCoffeesOnCart(coffeesOnCartWithoutDeletedOne)
   }
 
+  function resetCoffeesOnCart() {
+    setCoffeesOnCart([])
+  }
+
   function setCalculateTotalPrice() {
     setTotalPrice(
       coffeesOnCart.reduce((sum, coffee) => {
@@ -208,6 +213,7 @@ export function CoffeesContextProvider({
         setCalculateTotalPrice,
         addCoffeeToCart,
         removeCoffeeFromCart,
+        resetCoffeesOnCart,
       }}
     >
       {children}
