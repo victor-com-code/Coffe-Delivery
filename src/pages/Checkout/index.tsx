@@ -101,7 +101,7 @@ export function Checkout() {
           {coffeesOnCart.map((coffee) => {
             return (
               <CartItemCoffee key={coffee.name}>
-                <Coffee coffee={coffee} place="cart" />{' '}
+                <Coffee key={coffee.id} coffee={coffee} place="cart" />{' '}
                 <DividerItem></DividerItem>
               </CartItemCoffee>
             )

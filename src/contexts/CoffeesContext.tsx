@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useState } from 'react'
+import { ReactNode, createContext, useState, useReducer } from 'react'
 
 export interface CoffeeType {
   id: string
@@ -24,6 +24,10 @@ export const CoffeesContext = createContext({} as CoffeesContextType)
 
 interface CoffeesContextProviderProps {
   children: ReactNode
+}
+
+interface CoffeesOnCartState {
+  coffeesOnCart: CoffeeType[]
 }
 
 export function CoffeesContextProvider({
@@ -163,37 +167,81 @@ export function CoffeesContextProvider({
     },
   ])
 
-  const [coffeesOnCart, setCoffeesOnCart] = useState<CoffeeType[]>([])
+  const [cartState, dispatch] = useReducer(
+    (state: CoffeesOnCartState, action: any) => {
+      switch (action.type) {
+        case 'ADD_COFFEE_TO_CART':
+          return {
+            coffeesOnCart: [...state.coffeesOnCart, action.payload.data],
+          }
+
+        case 'REMOVE_COFFEE_FROM_CART':
+          return {
+            coffeesOnCart: state.coffeesOnCart.filter((coffee) => {
+              return coffee.id !== action.payload.coffeeId
+            }),
+          }
+
+        case 'SET_COFFEE_AMOUNT_ON_CART':
+          return {
+            coffeesOnCart: state.coffeesOnCart.map((item) => {
+              if (item.id === action.payload.data.id) {
+                return { ...item, amount: action.payload.data.amount }
+              } else {
+                return item
+              }
+            }),
+          }
+
+        case 'RESET_COFFEE_CART':
+          return {
+            coffeesOnCart: [],
+          }
+
+        default:
+          return state
+      }
+    },
+    {
+      coffeesOnCart: [],
+    },
+  )
 
   const [totalPrice, setTotalPrice] = useState(0)
 
+  const { coffeesOnCart } = cartState
+
   function addCoffeeToCart(data: CoffeeType) {
     if (coffeesOnCart.includes(data)) {
-      setCoffeesOnCart((state) => {
-        return state.map((item) => {
-          if (item.id === data.id) {
-            return { ...item, amount: data.amount }
-          }
-          return item
-        })
+      dispatch({
+        type: 'SET_COFFEE_AMOUNT_ON_CART',
+        payload: {
+          data,
+        },
       })
     } else {
-      setCoffeesOnCart((state) => {
-        return [...state, data]
+      dispatch({
+        type: 'ADD_COFFEE_TO_CART',
+        payload: {
+          data,
+        },
       })
     }
   }
 
   function removeCoffeeFromCart(coffeeId: string) {
-    const coffeesOnCartWithoutDeletedOne = coffeesOnCart.filter((coffee) => {
-      return coffee.id !== coffeeId
+    dispatch({
+      type: 'REMOVE_COFFEE_FROM_CART',
+      payload: {
+        coffeeId,
+      },
     })
-
-    setCoffeesOnCart(coffeesOnCartWithoutDeletedOne)
   }
 
   function resetCoffeesOnCart() {
-    setCoffeesOnCart([])
+    dispatch({
+      type: 'RESET_COFFEE_CART',
+    })
   }
 
   function setCalculateTotalPrice() {
