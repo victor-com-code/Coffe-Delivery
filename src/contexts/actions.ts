@@ -1,3 +1,4 @@
+import { AddressType } from '../reducers/address'
 import { CoffeeType } from '../reducers/coffees'
 
 export enum ActionTypes {
@@ -25,7 +26,7 @@ export function removeCoffeeFromCartAction(coffeeId: string) {
   }
 }
 
-export function setCoffeeAmountOnCart(coffee: CoffeeType) {
+export function setCoffeeAmountOnCartAction(coffee: CoffeeType) {
   return {
     type: ActionTypes.SET_COFFEE_AMOUNT_ON_CART,
     payload: {
@@ -37,5 +38,18 @@ export function setCoffeeAmountOnCart(coffee: CoffeeType) {
 export function resetCoffeeCartAction() {
   return {
     type: ActionTypes.RESET_COFFEE_CART,
+  }
+}
+
+export enum AddressActionTypes {
+  SET_NEW_ADDRESS = 'SET_NEW_ADDRESS',
+}
+
+export function setNewAddressAction(newAddress: AddressType) {
+  return {
+    type: AddressActionTypes.SET_NEW_ADDRESS,
+    payload: {
+      newAddress,
+    },
   }
 }

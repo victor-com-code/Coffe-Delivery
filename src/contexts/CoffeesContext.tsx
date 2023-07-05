@@ -4,7 +4,7 @@ import {
   addCoffeeToCartAction,
   removeCoffeeFromCartAction,
   resetCoffeeCartAction,
-  setCoffeeAmountOnCart,
+  setCoffeeAmountOnCartAction,
 } from './actions'
 
 interface CoffeesContextType {
@@ -170,7 +170,7 @@ export function CoffeesContextProvider({
 
   function addCoffeeToCart(data: CoffeeType) {
     if (coffeesOnCart.includes(data)) {
-      dispatch(setCoffeeAmountOnCart(data))
+      dispatch(setCoffeeAmountOnCartAction(data))
     } else {
       dispatch(addCoffeeToCartAction(data))
     }
