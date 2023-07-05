@@ -1,17 +1,9 @@
-import { ReactNode, createContext, useState } from 'react'
+import { ReactNode, createContext, useReducer, useState } from 'react'
+import { AddressType, addressReducer } from '../reducers/address'
+import { setNewAddressAction } from './actions'
 
 export interface PaymentMethodType {
   method: string
-}
-
-export interface AddressType {
-  cep: string
-  street: string
-  houseNumber: number
-  complement?: string
-  state: string
-  city: string
-  neighborhood: string
 }
 
 interface AddressContextType {
@@ -30,20 +22,25 @@ interface AddressContextProviderProps {
 export function AddressContextProvider({
   children,
 }: AddressContextProviderProps) {
-  const [address, setAddress] = useState<AddressType>({
-    cep: '',
-    street: '',
-    houseNumber: 0,
-    state: '',
-    city: '',
-    neighborhood: '',
+  const [addressState, dispatch] = useReducer(addressReducer, {
+    address: {
+      cep: '',
+      street: '',
+      houseNumber: 0,
+      state: '',
+      city: '',
+      neighborhood: '',
+    },
   })
+
   const [payment, setPayment] = useState<PaymentMethodType>({
     method: 'Dinheiro',
   })
 
-  function setNewAddress(data: AddressType) {
-    setAddress(data)
+  const { address } = addressState
+
+  function setNewAddress(newAddress: AddressType) {
+    dispatch(setNewAddressAction(newAddress))
   }
 
   function setNewPaymentMethod(method: PaymentMethodType) {
