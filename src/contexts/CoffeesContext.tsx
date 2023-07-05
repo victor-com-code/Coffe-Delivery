@@ -1,14 +1,11 @@
 import { ReactNode, createContext, useState, useReducer } from 'react'
-
-export interface CoffeeType {
-  id: string
-  image: string
-  name: string
-  description: string
-  tags: string[]
-  price: number
-  amount: number
-}
+import { CoffeeType, coffeesOnCartReducer } from '../reducers/coffees'
+import {
+  addCoffeeToCartAction,
+  removeCoffeeFromCartAction,
+  resetCoffeeCartAction,
+  setCoffeeAmountOnCart,
+} from './actions'
 
 interface CoffeesContextType {
   coffees: CoffeeType[]
@@ -24,10 +21,6 @@ export const CoffeesContext = createContext({} as CoffeesContextType)
 
 interface CoffeesContextProviderProps {
   children: ReactNode
-}
-
-interface CoffeesOnCartState {
-  coffeesOnCart: CoffeeType[]
 }
 
 export function CoffeesContextProvider({
@@ -167,45 +160,9 @@ export function CoffeesContextProvider({
     },
   ])
 
-  const [cartState, dispatch] = useReducer(
-    (state: CoffeesOnCartState, action: any) => {
-      switch (action.type) {
-        case 'ADD_COFFEE_TO_CART':
-          return {
-            coffeesOnCart: [...state.coffeesOnCart, action.payload.data],
-          }
-
-        case 'REMOVE_COFFEE_FROM_CART':
-          return {
-            coffeesOnCart: state.coffeesOnCart.filter((coffee) => {
-              return coffee.id !== action.payload.coffeeId
-            }),
-          }
-
-        case 'SET_COFFEE_AMOUNT_ON_CART':
-          return {
-            coffeesOnCart: state.coffeesOnCart.map((item) => {
-              if (item.id === action.payload.data.id) {
-                return { ...item, amount: action.payload.data.amount }
-              } else {
-                return item
-              }
-            }),
-          }
-
-        case 'RESET_COFFEE_CART':
-          return {
-            coffeesOnCart: [],
-          }
-
-        default:
-          return state
-      }
-    },
-    {
-      coffeesOnCart: [],
-    },
-  )
+  const [cartState, dispatch] = useReducer(coffeesOnCartReducer, {
+    coffeesOnCart: [],
+  })
 
   const [totalPrice, setTotalPrice] = useState(0)
 
@@ -213,40 +170,23 @@ export function CoffeesContextProvider({
 
   function addCoffeeToCart(data: CoffeeType) {
     if (coffeesOnCart.includes(data)) {
-      dispatch({
-        type: 'SET_COFFEE_AMOUNT_ON_CART',
-        payload: {
-          data,
-        },
-      })
+      dispatch(setCoffeeAmountOnCart(data))
     } else {
-      dispatch({
-        type: 'ADD_COFFEE_TO_CART',
-        payload: {
-          data,
-        },
-      })
+      dispatch(addCoffeeToCartAction(data))
     }
   }
 
   function removeCoffeeFromCart(coffeeId: string) {
-    dispatch({
-      type: 'REMOVE_COFFEE_FROM_CART',
-      payload: {
-        coffeeId,
-      },
-    })
+    dispatch(removeCoffeeFromCartAction(coffeeId))
   }
 
   function resetCoffeesOnCart() {
-    dispatch({
-      type: 'RESET_COFFEE_CART',
-    })
+    dispatch(resetCoffeeCartAction())
   }
 
   function setCalculateTotalPrice() {
     setTotalPrice(
-      coffeesOnCart.reduce((sum, coffee) => {
+      coffeesOnCart.reduce((sum: number, coffee: CoffeeType) => {
         return (sum += coffee.price * coffee.amount)
       }, 0),
     )

@@ -67,8 +67,6 @@ export function Checkout() {
   }, [coffeesOnCart, setCalculateTotalPrice])
 
   function handleCreateNewOrder(data: NewOrderFormData) {
-    console.log(data)
-
     const addressInfo: AddressType = {
       cep: data.cep,
       street: data.street,
