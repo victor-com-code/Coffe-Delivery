@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { Coffee } from '../../components/Coffee'
+import { CoffeeCard } from '../../components/Coffee'
 import { CoffeesContext } from '../../contexts/CoffeesContext'
 import {
   CartContainer,
@@ -17,7 +17,6 @@ import { ButtonTextG, TextL, TextS } from '../../styles/text'
 
 import {
   AddressContext,
-  AddressType,
   PaymentMethodType,
 } from '../../contexts/AddressContext'
 import { OrderInfoSection } from './components/OrderInfoSection'
@@ -25,6 +24,7 @@ import { OrderInfoSection } from './components/OrderInfoSection'
 import { useForm, FormProvider } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
+import { AddressType } from '../../reducers/address'
 
 const newOrderFormValidationSchema = zod
   .object({
@@ -99,7 +99,7 @@ export function Checkout() {
           {coffeesOnCart.map((coffee) => {
             return (
               <CartItemCoffee key={coffee.name}>
-                <Coffee key={coffee.id} coffee={coffee} place="cart" />{' '}
+                <CoffeeCard key={coffee.id} coffee={coffee} place="cart" />{' '}
                 <DividerItem></DividerItem>
               </CartItemCoffee>
             )

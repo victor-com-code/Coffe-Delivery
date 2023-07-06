@@ -17,7 +17,7 @@ import {
 } from './styles'
 import { ButtonTextM, TagText, TextM, TextS } from '../../styles/text'
 import { TitleS } from '../../styles/titles'
-import { FormEvent, useContext, useEffect, useState } from 'react'
+import { FormEvent, useContext, useEffect } from 'react'
 import { CoffeesContext } from '../../contexts/CoffeesContext'
 import { BRReal } from '../../App'
 import { CoffeeType } from '../../reducers/coffees'
@@ -27,28 +27,34 @@ interface CoffeeProps {
   place?: string
 }
 
-export function Coffee({ coffee, place = 'catalog' }: CoffeeProps) {
-  const [amount, setAmount] = useState<number>(coffee.amount)
-
-  const { addCoffeeToCart, removeCoffeeFromCart, setCalculateTotalPrice } =
-    useContext(CoffeesContext)
+export function CoffeeCard({ coffee, place = 'catalog' }: CoffeeProps) {
+  const {
+    addCoffeeToCart,
+    removeCoffeeFromCart,
+    setCalculateTotalPrice,
+    setCoffeeAmount,
+    setCoffeeAmountOnCart,
+  } = useContext(CoffeesContext)
 
   function handleDecreaseAmount() {
-    setAmount((state) => {
-      return (state -= 1)
-    })
+    const amount = coffee.amount - 1
+
+    place === 'catalog'
+      ? setCoffeeAmount(coffee.id, amount)
+      : setCoffeeAmountOnCart(coffee.id, amount)
   }
 
   function handleIncreaseAmount() {
-    setAmount((state) => {
-      return (state += 1)
-    })
+    const amount = coffee.amount + 1
+
+    place === 'catalog'
+      ? setCoffeeAmount(coffee.id, amount)
+      : setCoffeeAmountOnCart(coffee.id, amount)
   }
 
   useEffect(() => {
-    coffee.amount = amount
     setCalculateTotalPrice()
-  }, [amount, coffee, setCalculateTotalPrice])
+  }, [coffee, setCalculateTotalPrice])
 
   function handleAddToCart(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -63,7 +69,9 @@ export function Coffee({ coffee, place = 'catalog' }: CoffeeProps) {
   }
 
   const isSubmitDisabled =
-    place === 'catalog' ? !amount || amount < 0 : amount < 2
+    place === 'catalog'
+      ? !coffee.amount || coffee.amount < 0
+      : coffee.amount < 2
 
   let card
 
@@ -89,7 +97,7 @@ export function Coffee({ coffee, place = 'catalog' }: CoffeeProps) {
                 placeholder="1"
                 min={1}
                 max={99}
-                value={amount}
+                value={coffee.amount}
                 readOnly
               />
 
@@ -150,7 +158,7 @@ export function Coffee({ coffee, place = 'catalog' }: CoffeeProps) {
                 placeholder="1"
                 min={1}
                 max={99}
-                value={amount}
+                value={coffee.amount}
                 readOnly
               />
 

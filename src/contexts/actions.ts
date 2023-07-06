@@ -26,11 +26,12 @@ export function removeCoffeeFromCartAction(coffeeId: string) {
   }
 }
 
-export function setCoffeeAmountOnCartAction(coffee: CoffeeType) {
+export function setCoffeeAmountOnCartAction(coffeeId: string, amount: number) {
   return {
     type: ActionTypes.SET_COFFEE_AMOUNT_ON_CART,
     payload: {
-      coffee,
+      coffeeId,
+      amount,
     },
   }
 }

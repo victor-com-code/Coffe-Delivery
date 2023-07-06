@@ -1,3 +1,5 @@
+import { produce } from 'immer'
+
 export interface AddressType {
   cep: string
   street: string
@@ -14,9 +16,9 @@ interface AddressState {
 
 export function addressReducer(state: AddressState, action: any) {
   if (action.type === 'SET_NEW_ADDRESS') {
-    return {
-      address: action.payload.newAddress,
-    }
+    return produce(state, (draft) => {
+      draft.address = action.payload.newAddress
+    })
   }
 
   return state

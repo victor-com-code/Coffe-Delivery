@@ -11,6 +11,8 @@ interface CoffeesContextType {
   coffees: CoffeeType[]
   coffeesOnCart: CoffeeType[]
   totalPrice: number
+  setCoffeeAmount: (coffeeId: string, amount: number) => void
+  setCoffeeAmountOnCart: (coffeeId: string, amount: number) => void
   setCalculateTotalPrice: () => void
   addCoffeeToCart: (data: CoffeeType) => void
   removeCoffeeFromCart: (coffeeId: string) => void
@@ -26,7 +28,7 @@ interface CoffeesContextProviderProps {
 export function CoffeesContextProvider({
   children,
 }: CoffeesContextProviderProps) {
-  const [coffees] = useState<CoffeeType[]>([
+  const [coffees, setCoffees] = useState<CoffeeType[]>([
     {
       id: '1',
       image: '/src/pages/Home/assets/expresso.png',
@@ -168,20 +170,31 @@ export function CoffeesContextProvider({
 
   const { coffeesOnCart } = cartState
 
+  function setCoffeeAmount(coffeeId: string, amount: number) {
+    setCoffees((state) => {
+      return state.map((coffee) => {
+        if (coffee.id === coffeeId) {
+          return {
+            ...coffee,
+            amount,
+          }
+        }
+
+        return coffee
+      })
+    })
+  }
+
   function addCoffeeToCart(data: CoffeeType) {
-    if (coffeesOnCart.includes(data)) {
-      dispatch(setCoffeeAmountOnCartAction(data))
-    } else {
-      dispatch(addCoffeeToCartAction(data))
-    }
+    dispatch(addCoffeeToCartAction(data))
+  }
+
+  function setCoffeeAmountOnCart(coffeeId: string, amount: number) {
+    dispatch(setCoffeeAmountOnCartAction(coffeeId, amount))
   }
 
   function removeCoffeeFromCart(coffeeId: string) {
     dispatch(removeCoffeeFromCartAction(coffeeId))
-  }
-
-  function resetCoffeesOnCart() {
-    dispatch(resetCoffeeCartAction())
   }
 
   function setCalculateTotalPrice() {
@@ -192,12 +205,18 @@ export function CoffeesContextProvider({
     )
   }
 
+  function resetCoffeesOnCart() {
+    dispatch(resetCoffeeCartAction())
+  }
+
   return (
     <CoffeesContext.Provider
       value={{
         coffees,
         coffeesOnCart,
         totalPrice,
+        setCoffeeAmount,
+        setCoffeeAmountOnCart,
         setCalculateTotalPrice,
         addCoffeeToCart,
         removeCoffeeFromCart,

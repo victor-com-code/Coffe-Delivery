@@ -6,7 +6,7 @@ import {
 } from './styles'
 
 import { TitleM } from '../../styles/titles'
-import { Coffee } from '../../components/Coffee'
+import { CoffeeCard } from '../../components/Coffee'
 import { Introduction } from './components/Introduction'
 import { useContext } from 'react'
 import { CoffeesContext } from '../../contexts/CoffeesContext'
@@ -24,7 +24,7 @@ export function Home() {
         <TitleM>Nossos Cafés</TitleM>
         <ListContainer>
           {coffees.map((coffee) => {
-            return <Coffee key={coffee.id} coffee={coffee} />
+            return <CoffeeCard key={coffee.id} coffee={coffee} />
           })}
         </ListContainer>
       </CoffeesSection>
