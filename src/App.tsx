@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Router } from './Router'
 import { CoffeesContextProvider } from './contexts/CoffeesContext'
 import { AddressContextProvider } from './contexts/AddressContext'
+import { CartContextProvider } from './contexts/CartContext'
 
 export const BRReal = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -16,9 +17,11 @@ export function App() {
     <ThemeProvider theme={defaultTheme}>
       <BrowserRouter>
         <CoffeesContextProvider>
-          <AddressContextProvider>
-            <Router />
-          </AddressContextProvider>
+          <CartContextProvider>
+            <AddressContextProvider>
+              <Router />
+            </AddressContextProvider>
+          </CartContextProvider>
         </CoffeesContextProvider>
       </BrowserRouter>
 

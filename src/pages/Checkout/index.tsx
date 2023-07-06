@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { CoffeeCard } from '../../components/Coffee'
-import { CoffeesContext } from '../../contexts/CoffeesContext'
+import { CartContext } from '../../contexts/CartContext'
 import {
   CartContainer,
   CartItemCoffee,
@@ -47,7 +47,7 @@ export function Checkout() {
     totalPrice,
     setCalculateTotalPrice,
     resetCoffeesOnCart,
-  } = useContext(CoffeesContext)
+  } = useContext(CartContext)
 
   const { setNewAddress, setNewPaymentMethod } = useContext(AddressContext)
 

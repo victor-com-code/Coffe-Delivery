@@ -18,7 +18,9 @@ import {
 import { ButtonTextM, TagText, TextM, TextS } from '../../styles/text'
 import { TitleS } from '../../styles/titles'
 import { FormEvent, useContext, useEffect } from 'react'
+
 import { CoffeesContext } from '../../contexts/CoffeesContext'
+import { CartContext } from '../../contexts/CartContext'
 import { BRReal } from '../../App'
 import { CoffeeType } from '../../reducers/coffees'
 
@@ -32,9 +34,10 @@ export function CoffeeCard({ coffee, place = 'catalog' }: CoffeeProps) {
     addCoffeeToCart,
     removeCoffeeFromCart,
     setCalculateTotalPrice,
-    setCoffeeAmount,
     setCoffeeAmountOnCart,
-  } = useContext(CoffeesContext)
+  } = useContext(CartContext)
+
+  const { setCoffeeAmount } = useContext(CoffeesContext)
 
   function handleDecreaseAmount() {
     const amount = coffee.amount - 1

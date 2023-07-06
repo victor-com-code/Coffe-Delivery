@@ -2,15 +2,29 @@ import { AddressType } from '../reducers/address'
 import { CoffeeType } from '../reducers/coffees'
 
 export enum ActionTypes {
-  ADD_COFFEE_TO_CART = 'ADD_COFFEE_TO_CART',
-  REMOVE_COFFEE_FROM_CART = 'REMOVE_COFFEE_FROM_CART',
+  SET_COFFEE_AMOUNT = 'SET_COFFEE_AMOUNT',
+}
+
+export function setCoffeeAmountAction(coffeeId: string, amount: number) {
+  return {
+    type: ActionTypes.SET_COFFEE_AMOUNT,
+    payload: {
+      coffeeId,
+      amount,
+    },
+  }
+}
+
+export enum CartActionTypes {
+  ADD_TO_CART = 'ADD_TO_CART',
+  REMOVE_FROM_CART = 'REMOVE_FROM_CART',
   SET_COFFEE_AMOUNT_ON_CART = 'SET_COFFEE_AMOUNT_ON_CART',
-  RESET_COFFEE_CART = 'RESET_COFFEE_CART',
+  RESET_CART = 'RESET_CART',
 }
 
 export function addCoffeeToCartAction(newCoffee: CoffeeType) {
   return {
-    type: ActionTypes.ADD_COFFEE_TO_CART,
+    type: CartActionTypes.ADD_TO_CART,
     payload: {
       newCoffee,
     },
@@ -19,7 +33,7 @@ export function addCoffeeToCartAction(newCoffee: CoffeeType) {
 
 export function removeCoffeeFromCartAction(coffeeId: string) {
   return {
-    type: ActionTypes.REMOVE_COFFEE_FROM_CART,
+    type: CartActionTypes.REMOVE_FROM_CART,
     payload: {
       coffeeId,
     },
@@ -28,7 +42,7 @@ export function removeCoffeeFromCartAction(coffeeId: string) {
 
 export function setCoffeeAmountOnCartAction(coffeeId: string, amount: number) {
   return {
-    type: ActionTypes.SET_COFFEE_AMOUNT_ON_CART,
+    type: CartActionTypes.SET_COFFEE_AMOUNT_ON_CART,
     payload: {
       coffeeId,
       amount,
@@ -36,9 +50,9 @@ export function setCoffeeAmountOnCartAction(coffeeId: string, amount: number) {
   }
 }
 
-export function resetCoffeeCartAction() {
+export function resetCoffeesOnCartAction() {
   return {
-    type: ActionTypes.RESET_COFFEE_CART,
+    type: CartActionTypes.RESET_CART,
   }
 }
 

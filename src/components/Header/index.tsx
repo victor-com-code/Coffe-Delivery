@@ -7,11 +7,11 @@ import {
 import logoCoffee from '../../assets/logo.svg'
 import { NavLink } from 'react-router-dom'
 import { useContext } from 'react'
-import { CoffeesContext } from '../../contexts/CoffeesContext'
+import { CartContext } from '../../contexts/CartContext'
 import { AddressContext } from '../../contexts/AddressContext'
 
 export function Header() {
-  const { coffeesOnCart } = useContext(CoffeesContext)
+  const { coffeesOnCart } = useContext(CartContext)
   const { address } = useContext(AddressContext)
 
   const totalItemsInCart = coffeesOnCart.length
