@@ -1,4 +1,10 @@
-import { ReactNode, createContext, useReducer, useState } from 'react'
+import {
+  ReactNode,
+  createContext,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react'
 import { AddressType, addressReducer } from '../reducers/address'
 import { setNewAddressAction } from './actions'
 
@@ -22,22 +28,40 @@ interface AddressContextProviderProps {
 export function AddressContextProvider({
   children,
 }: AddressContextProviderProps) {
-  const [addressState, dispatch] = useReducer(addressReducer, {
-    address: {
-      cep: '',
-      street: '',
-      houseNumber: 0,
-      state: '',
-      city: '',
-      neighborhood: '',
+  const [addressState, dispatch] = useReducer(
+    addressReducer,
+    {
+      address: {
+        cep: '',
+        street: '',
+        houseNumber: 0,
+        state: '',
+        city: '',
+        neighborhood: '',
+      },
     },
-  })
+    (initialState) => {
+      const storedStateAsJson = localStorage.getItem(
+        '@coffee-delivery:address-state-1.0.0',
+      )
+
+      if (storedStateAsJson) return JSON.parse(storedStateAsJson)
+
+      return initialState
+    },
+  )
 
   const [payment, setPayment] = useState<PaymentMethodType>({
     method: 'Dinheiro',
   })
 
   const { address } = addressState
+
+  useEffect(() => {
+    const stateJSON = JSON.stringify(addressState)
+
+    localStorage.setItem('@coffee-delivery:address-state-1.0.0', stateJSON)
+  }, [addressState])
 
   function setNewAddress(newAddress: AddressType) {
     dispatch(setNewAddressAction(newAddress))
