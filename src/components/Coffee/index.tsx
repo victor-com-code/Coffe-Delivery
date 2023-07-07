@@ -126,7 +126,7 @@ export function CoffeeCard({ coffee, place = 'catalog' }: CoffeeProps) {
     )
   } else {
     card = (
-      <CoffeeCardCatalog key={coffee.id}>
+      <CoffeeCardCatalog key={coffee.id} className='coffeeCard'>
         <ImageCoffee src={coffee.image} alt="" />
 
         <CoffeeTags>

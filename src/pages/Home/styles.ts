@@ -31,4 +31,8 @@ export const ListContainer = styled.div`
   flex-wrap: wrap;
   margin: 2rem 0;
   gap: 1.5rem;
+
+  &:has(.coffeeCard:hover) .coffeeCard:not(:hover) {
+    opacity: 0.7;
+  }
 `
