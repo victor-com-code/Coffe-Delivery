@@ -31,14 +31,7 @@ export function AddressContextProvider({
   const [addressState, dispatch] = useReducer(
     addressReducer,
     {
-      address: {
-        cep: '',
-        street: '',
-        houseNumber: 0,
-        state: '',
-        city: '',
-        neighborhood: '',
-      },
+      address: {},
     },
     (initialState) => {
       const storedStateAsJson = localStorage.getItem(

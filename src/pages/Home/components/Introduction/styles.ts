@@ -35,7 +35,7 @@ interface IconsProps {
 export const ItemIcons = styled.span<IconsProps>`
   background: ${(props) => props.theme[ICONS_COLORS[props.iconsColor]]};
 
-  color: ${(props) => props.theme.white};
+  color: ${(props) => props.theme.background};
 
   display: flex;
   align-items: center;
@@ -52,5 +52,9 @@ export const IntroImage = styled.div`
 
   img {
     width: calc(30rem - 4px);
+
+    @media (max-width: 480px) {
+      width: 100%;
+    }
   }
 `

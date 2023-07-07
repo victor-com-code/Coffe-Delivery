@@ -1,11 +1,14 @@
 import { ThemeProvider } from 'styled-components'
-import { defaultTheme } from './styles/themes/default'
 import { GlobalStyle } from './styles/global'
 import { BrowserRouter } from 'react-router-dom'
 import { Router } from './Router'
 import { CoffeesContextProvider } from './contexts/CoffeesContext'
 import { AddressContextProvider } from './contexts/AddressContext'
 import { CartContextProvider } from './contexts/CartContext'
+import { useState } from 'react'
+import { darkTheme } from './styles/themes/dark'
+import { defaultTheme } from './styles/themes/default'
+import { Swap } from '@phosphor-icons/react'
 
 export const BRReal = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -13,8 +16,20 @@ export const BRReal = new Intl.NumberFormat('pt-BR', {
 })
 
 export function App() {
+  const [activeTheme, setActiveTheme] = useState(defaultTheme)
+
+  function handleActiveTheme() {
+    activeTheme === defaultTheme
+      ? setActiveTheme(darkTheme)
+      : setActiveTheme(defaultTheme)
+  }
+
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={activeTheme}>
+      <label className="themeButton">
+        <input type="checkbox" onClick={handleActiveTheme} />
+        <Swap size={32} />
+      </label>
       <BrowserRouter>
         <CoffeesContextProvider>
           <CartContextProvider>
@@ -24,7 +39,6 @@ export function App() {
           </CartContextProvider>
         </CoffeesContextProvider>
       </BrowserRouter>
-
       <GlobalStyle />
     </ThemeProvider>
   )

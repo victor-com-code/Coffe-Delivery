@@ -5,21 +5,26 @@ import {
   LocationContainer,
 } from './styles'
 import logoCoffee from '../../assets/logo.svg'
+import logoCoffeeLight from '../../assets/logo-light.svg'
+
 import { NavLink } from 'react-router-dom'
 import { useContext } from 'react'
 import { CartContext } from '../../contexts/CartContext'
 import { AddressContext } from '../../contexts/AddressContext'
+import { useTheme } from 'styled-components'
 
 export function Header() {
   const { coffeesOnCart } = useContext(CartContext)
   const { address } = useContext(AddressContext)
+
+  const isLightTheme = useTheme().background === '#FAFAFA'
 
   const totalItemsInCart = coffeesOnCart.length
 
   return (
     <HeaderContainer>
       <NavLink className={'logoHome'} to={'/'} title="Home">
-        <img src={logoCoffee} alt="" />
+        <img src={isLightTheme ? logoCoffee : logoCoffeeLight} alt="" />
       </NavLink>
 
       <nav>

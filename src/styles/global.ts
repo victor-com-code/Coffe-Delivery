@@ -38,6 +38,36 @@ export const GlobalStyle = createGlobalStyle`
     -moz-appearance: textfield;
   }
 
+  .themeButton {
+    background: ${(props) => props.theme['reverse-background']};
+    color: ${(props) => props.theme.background};
+
+    cursor: pointer;
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    border: 1px solid transparent;
+    border-radius: 1000px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.5rem;
+
+    transition: all 0.5s;
+
+    input {
+      display: none;
+    }
+
+    &:hover {
+      background: ${(props) => props.theme.background};
+      color: ${(props) => props.theme['reverse-background']};;
+      border-color: ${(props) => props.theme['reverse-background']};
+    }
+  }
+
   @media (max-width: 768px) {
     html {
       font-size: 87.5%;
